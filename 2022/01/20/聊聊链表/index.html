@@ -1,0 +1,748 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/logo.png">
+  <link rel="icon" href="/img/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#B2A4FF">
+  <meta name="author" content="Only(AR)">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="输入一个整数，输出从1到那个数的全排列。使用回溯法，编写递归函数求解。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="聊聊链表">
+<meta property="og:url" content="http://example.com/2022/01/20/%E8%81%8A%E8%81%8A%E9%93%BE%E8%A1%A8/index.html">
+<meta property="og:site_name" content="Only(AR)&#39;s blog">
+<meta property="og:description" content="输入一个整数，输出从1到那个数的全排列。使用回溯法，编写递归函数求解。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/%E8%81%8A%E8%81%8A%E9%93%BE%E8%A1%A8.assets/array.png">
+<meta property="og:image" content="http://example.com/img/%E8%81%8A%E8%81%8A%E9%93%BE%E8%A1%A8.assets/create.png">
+<meta property="og:image" content="http://example.com/img/%E8%81%8A%E8%81%8A%E9%93%BE%E8%A1%A8.assets/insert.png">
+<meta property="og:image" content="http://example.com/img/%E8%81%8A%E8%81%8A%E9%93%BE%E8%A1%A8.assets/delete.png">
+<meta property="article:published_time" content="2022-01-20T14:29:22.000Z">
+<meta property="article:modified_time" content="2022-07-23T14:54:54.561Z">
+<meta property="article:author" content="Only(AR)">
+<meta property="article:tag" content="C语言">
+<meta property="article:tag" content="BUAA">
+<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="链表">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/%E8%81%8A%E8%81%8A%E9%93%BE%E8%A1%A8.assets/array.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>聊聊链表 - Only(AR)&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.15.6/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Only(AR)&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                时间轴
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="聊聊链表"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-01-20 22:29" pubdate>
+          2022年1月20日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          41 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">聊聊链表</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="数据结构聊聊链表"><a class="markdownIt-Anchor" href="#数据结构聊聊链表"></a> 数据结构：聊聊链表</h1>
+<blockquote>
+<p>幸福穿着节日的盛装欢迎你。	——威廉•莎士比亚《罗密欧与朱丽叶》</p>
+</blockquote>
+<h2 id="1-说在前面"><a class="markdownIt-Anchor" href="#1-说在前面"></a> 1. 说在前面</h2>
+<p>大家在学数组的时候小脑瓜里有没有这样的疑惑：为什么数组必须是定长的？为什么数组开太长会编译错误？数组越界为什么不报错？</p>
+<p>其实开数组的时候你的电脑的内存里是这样的：</p>
+<p><img src="/img/%E8%81%8A%E8%81%8A%E9%93%BE%E8%A1%A8.assets/array.png" srcset="/img/loading.gif" lazyload alt="" /></p>
+<p>当声明数组大小之后，内存里会往下数相应的空间，然后从下到上依次为数组分配空间，所以你访问 a[5] 实际是访问已使用部分的内存。这又说明，数组占用的是一片<strong>连续的空间</strong>，而你若是开 a[1000000000] 那么大的数组，计算机很难保证有那么大的连续空间，所以编译器出于一种保护的目的，禁止开那么大的空间。不过有的小伙伴可能发现有时候太大的数组在自己的电脑开不出来，但是在 OJ 上能 AC，这是因为 OJ 的服务器没有这样一种编译时的保护机制，不过当你的程序运行时使用内存过大会强制终止，并返回 MLE。</p>
+<p>所以为了克服数组只能定长的弊端，科学家们给出了一些可行的方案，比如变长数组、链表等等。</p>
+<p>变长数组顾名思义：长度可变的数组，在定义后可以自动改变长度。满了会自动加长，也就是另外找一片更长的连续空间，然后把自己整个 copy 过去；如果里面的元素太少，自己还会缩短，也就是把自己用不到的部分给释放出去。</p>
+<p>这里给出变长数组的代码大家可以留着，<strong>大作业</strong>或许有用，只能让数组伸长并没有实现缩短：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * 定义结构体 struct Vector，其指针重命名为 VecPtr</span><br><span class="hljs-comment"> * length   : 数组已使用的长度</span><br><span class="hljs-comment"> * capacity : 数组的容量</span><br><span class="hljs-comment"> * array    ：用于存放数据的区域</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Vector</span> &#123;</span><br>    <span class="hljs-type">int</span> length;<br>    <span class="hljs-type">int</span> capacity;<br>    <span class="hljs-type">int</span> *<span class="hljs-built_in">array</span>;<br>&#125; *VecPtr;<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * 创建一个空的变长数组，初始容量为 5，返回变长数组的指针</span><br><span class="hljs-comment"> */</span><br>VecPtr <span class="hljs-title function_">create_vector</span><span class="hljs-params">()</span> &#123;<br>    VecPtr vec = (VecPtr) <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> Vector));<br>    vec-&gt;<span class="hljs-built_in">array</span> = (<span class="hljs-type">int</span> *) <span class="hljs-built_in">malloc</span>(<span class="hljs-number">5</span> * <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>));<br>    vec-&gt;capacity = <span class="hljs-number">5</span>;<br>    vec-&gt;length = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">return</span> vec;<br>&#125;<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * 这个函数可以在数组的尾部插入元素，当数组满了自动扩大一倍</span><br><span class="hljs-comment"> * vec  : 变长数组的指针</span><br><span class="hljs-comment"> * item : 要插入的元素</span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">push_back</span><span class="hljs-params">(VecPtr vec, <span class="hljs-type">int</span> item)</span> &#123;<br>    vec-&gt;<span class="hljs-built_in">array</span>[vec-&gt;length] = item;<br>    vec-&gt;length++;<br>    <span class="hljs-keyword">if</span> (vec-&gt;length == vec-&gt;capacity)<br>        vec-&gt;<span class="hljs-built_in">array</span> = (<span class="hljs-type">int</span> *) <span class="hljs-built_in">realloc</span>(vec-&gt;<span class="hljs-built_in">array</span>, <span class="hljs-number">2</span> * vec-&gt;capacity * <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>));<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<p>2333是不是有很多你们看不懂的东西？这里我说明一下相关语法：</p>
+<ul>
+<li><code>typedef struct Vector &#123;...&#125; *VecPtr;</code>：<code>typedef</code>是 type define 的缩写，就是类型名字重定义，这里的用法是将这句话和定义结构体写到一起去了，最后的 <code>*VecPtr</code>，意思是让<code>Vecptr</code>成为<code>struct Vector</code>的<strong>指针</strong>类型</li>
+</ul>
+<blockquote>
+<p>题外话：在 C++ 里有现成的变长数组可以使用，名字就叫<code>vector</code>，vector 是向量的意思，大家线性代数都学过高维向量吧，你懂的。<code>VecPtr</code>是 vector pointer 的缩写，即“数组指针”。</p>
+</blockquote>
+<ul>
+<li><code>-&gt;</code> 运算符是 C 语言中结构体的一种操作，表示“给一个结构体<strong>指针</strong>，找到那个结构体并访问其元素”。例如 <code>vec-&gt;length</code> 就等于 <code>&amp;vec.length</code>，但是用<code>-&gt;</code>显得更生动形象也更推荐。</li>
+<li><code>VecPtr vec = (VecPtr) malloc(sizeof(struct Vector));</code>：<code>malloc()</code>函数是 memory allocate 的缩写，即“内存分配”，括号里的参数是内存的大小，一般写作 <code>n * sizeof(...)</code>，表示分配那么多空间，返回那片空间的起始地址（空指针<code>void *</code>类型），函数前面的 <code>(VecPtr)</code>是强制类型转换，将 <code>void *</code>指针转换为 <code>VecPtr</code>类型才能给参数赋值。后面的 <code>(int *)</code>同理。<code>malloc()</code>函数需要<strong>头文件</strong><code>&lt;stdlib.h&gt;</code>！！！</li>
+<li><code>realloc</code>顾名思义，是内存重新分配，有两个参数，第一个参数是旧地址，第二个参数是新空间的大小。就是开辟一块新空间，然后把旧地址里的东西整个 copy 过去并释放旧空间，最后返回新空间的起始地址，记得加上类型转换！</li>
+</ul>
+<p>可能看到上述写法你们会有点不适应，但是在以后的学习中，尤其是最重要的链表和树，<strong>结构体指针</strong>是必须要熟练掌握的！</p>
+<h2 id="2-初识链表linked-list"><a class="markdownIt-Anchor" href="#2-初识链表linked-list"></a> 2. 初识链表(Linked List)</h2>
+<p>变长数组还是有个缺点，当你的内存紧张的时候，找不到一块足够大小的连续空间，那么数组的加长就会失败。为了能榨干计算机的每一处内存，科学家就想出了这个“恶毒”的方案。数据的存储并不连续，每插入一个数据就在内存中寻找一小块内存用掉，直到内存被完全用光为止。</p>
+<p>链表画出来大概是这样的：</p>
+<p>![](/img/聊聊链表.assets/Linked List.png)</p>
+<p>链表的每一个方块被称为<strong>结点(Node)</strong>，除了最后一个以外，每一个结点都连接着后一个结点，所以只要有链表的头部结点，就可以往后一个一个找以访问到所有结点。但是这种方式有一个缺点：不能像数组一样快速访问第某个节点（这种被称作随机访问），想访问第 k 个结点就必须从头结点开始一个一个数，数到 k 才行，因此链表的随机访问的平均时间复杂度是 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>N</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(N)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mclose">)</span></span></span></span>，而数组是 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span>。</p>
+<h2 id="3-操作和实现"><a class="markdownIt-Anchor" href="#3-操作和实现"></a> 3. 操作和实现</h2>
+<h3 id="1-链表的定义"><a class="markdownIt-Anchor" href="#1-链表的定义"></a> 1. 链表的定义</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Node</span> &#123;</span><br>    <span class="hljs-type">int</span> val;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Node</span> * <span class="hljs-title">next</span>;</span><br>&#125; *List;<br></code></pre></td></tr></table></figure>
+<p>以上是定义链表结构体的代码</p>
+<ul>
+<li><code>int val</code>：链表存放数据的值，就是图里的 data 块，其实是可以根据需要灵活多变的；</li>
+<li><code>struct Node * next</code> ：这是定义一个 <code>next</code> 元素，类型是链表的指针，用来保存下一个结点的地址，末尾结点的 <code>next</code> 是空的（即NULL），在图里用“\and” 符号表示。（你问我为啥不用<code>List</code>？<code>List</code>是在后面定义的，在前面就用它也过不去编译啊）</li>
+<li>最后将这个结构体的指针重命名为 <code>List</code>。</li>
+</ul>
+<h3 id="2-链表的构造"><a class="markdownIt-Anchor" href="#2-链表的构造"></a> 2. 链表的构造</h3>
+<p>这里举这样一种情况为例：把一个长度为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">n</span></span></span></span> 的数组转化为链表。这里有两个问题需要我们来解决：</p>
+<ul>
+<li>当链表是空的时候我们需要无中生有造出一个表头来；</li>
+<li>从第二个元素开始，构造的过程就是一个一个往后插入元素。</li>
+</ul>
+<p>大家看图：</p>
+<p><img src="/img/%E8%81%8A%E8%81%8A%E9%93%BE%E8%A1%A8.assets/create.png" srcset="/img/loading.gif" lazyload alt="" /></p>
+<p>代码实现：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * a[] 是数组，n 是数组的长度</span><br><span class="hljs-comment"> * 函数构造链表并返回表头的指针</span><br><span class="hljs-comment"> * p 和 r 是临时的指针，命名的学问：</span><br><span class="hljs-comment"> *		p 可以看作是 pointer 的缩写，所以常常用 p 来命名指针，就跟用 a(array 的缩写) 来命名数组一个道理。</span><br><span class="hljs-comment"> *		那 p 之后的变量为啥不叫 q 直接叫 r 了呢？因为 r 可以看做 rear (尾部)的缩写</span><br><span class="hljs-comment"> */</span><br>List <span class="hljs-title function_">createList</span><span class="hljs-params">(<span class="hljs-type">int</span> a[], <span class="hljs-type">int</span> n)</span> &#123;<br>    List L = <span class="hljs-literal">NULL</span>, p = <span class="hljs-literal">NULL</span>, r = <span class="hljs-literal">NULL</span>;<br><br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) &#123;<br>        p = (List) <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span> (<span class="hljs-keyword">struct</span> Node));<br>        p-&gt;val = a[i];<br>        p-&gt;next = <span class="hljs-literal">NULL</span>;<br><br>        <span class="hljs-keyword">if</span> (L == <span class="hljs-literal">NULL</span>)<br>            L = p;<br>        <span class="hljs-keyword">else</span><br>            r-&gt;next = p;<br>        r = p;<br>    &#125;<br>    <span class="hljs-keyword">return</span> L;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>以上代码墙裂建议<strong>充分理解并熟练掌握</strong>。</p>
+<h3 id="3-链表的遍历-随机访问和查找"><a class="markdownIt-Anchor" href="#3-链表的遍历-随机访问和查找"></a> 3. 链表的遍历、随机访问和查找</h3>
+<p>y1s1 这都没啥难的，就是大概看看熟悉熟悉。</p>
+<h4 id="1-遍历打印链表"><a class="markdownIt-Anchor" href="#1-遍历打印链表"></a> 1. 遍历：打印链表</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-type">void</span> <span class="hljs-title function_">printList</span><span class="hljs-params">(List L)</span> &#123;<br>    <span class="hljs-keyword">while</span> (L != <span class="hljs-literal">NULL</span>) &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d &quot;</span>, L-&gt;val);<br>        L = L-&gt;next;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="2-随机访问链表第-k-个元素从-0-开始计数"><a class="markdownIt-Anchor" href="#2-随机访问链表第-k-个元素从-0-开始计数"></a> 2. 随机访问：链表第 k 个元素（从 0 开始计数）</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-type">int</span> <span class="hljs-title function_">atList</span><span class="hljs-params">(List L, <span class="hljs-type">int</span> k)</span> &#123;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; k; i++) &#123;<br>        L = L-&gt;next;<br>        <span class="hljs-keyword">if</span> (L == <span class="hljs-literal">NULL</span>)<br>            <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> L-&gt;val;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>注意 k 大于等于链表长度时返回 -1。</p>
+<h4 id="3-查找并返回找到结点的指针"><a class="markdownIt-Anchor" href="#3-查找并返回找到结点的指针"></a> 3. 查找并返回找到结点的指针</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs C">List <span class="hljs-title function_">searchList</span><span class="hljs-params">(List L, <span class="hljs-type">int</span> key)</span> &#123;<br>    <span class="hljs-keyword">while</span> (L != <span class="hljs-literal">NULL</span>) &#123;<br>        <span class="hljs-keyword">if</span> (L-&gt;val == key)<br>            <span class="hljs-keyword">return</span> L;<br>        L = L-&gt;next;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="4-链表的插入"><a class="markdownIt-Anchor" href="#4-链表的插入"></a> 4. 链表的插入</h3>
+<p>给定链表的某结点 p，要在 p 的后面插入元素 item，如何操作？看图：</p>
+<p><img src="/img/%E8%81%8A%E8%81%8A%E9%93%BE%E8%A1%A8.assets/insert.png" srcset="/img/loading.gif" lazyload alt="" /></p>
+<p>需要注意的是：一定是<strong>先让 q 指 p-&gt;next 再让 p 指 q</strong>。顺序颠倒的话 p 后面的结点就丢了！</p>
+<p>重要的就是把图记下来，代码很容易写：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-type">void</span> <span class="hljs-title function_">insertList</span><span class="hljs-params">(List p, <span class="hljs-type">int</span> item)</span> &#123;<br>    List q = (List) <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span> (<span class="hljs-keyword">struct</span> Node));<br>    q-&gt;val = item;<br>    q-&gt;next = p-&gt;next;  <span class="hljs-comment">// 让 q 指 p 的下一个结点</span><br>    p-&gt;next = q;        <span class="hljs-comment">// 让 p-&gt;next 变成 q</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="5-链表的删除"><a class="markdownIt-Anchor" href="#5-链表的删除"></a> 5. 链表的删除</h3>
+<p>注意链表在删除时不能直接删除要删除的结点，而要给出它的<strong>前一个</strong>结点才能操作。</p>
+<p><img src="/img/%E8%81%8A%E8%81%8A%E9%93%BE%E8%A1%A8.assets/delete.png" srcset="/img/loading.gif" lazyload alt="" /></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-type">int</span> <span class="hljs-title function_">deleteList</span><span class="hljs-params">(List p)</span> &#123;<br>    <span class="hljs-keyword">if</span> (p-&gt;next == <span class="hljs-literal">NULL</span>)<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>    List q = p-&gt;next;<br>    p-&gt;next = q-&gt;next;<br>    <span class="hljs-built_in">free</span>(q);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>当 p 是链表尾时无法删除，返回-1，删除成功则返回 0。</p>
+<p><code>free()</code>函数接收一个指针，并将指针所指的空间释放掉留给以后使用。如果我们只写<code>p-&gt;next = p-&gt;next-&gt;next</code>虽然也能删除，但是吧……这是既浪费空间又不很道德的~如果你的程序跑在长期运行的服务器上，就可能会发生“内存泄漏”，明明没有存多少东西，内存就满了，所以我们要养成好习惯，合理利用内存哈。</p>
+<h2 id="4-总结"><a class="markdownIt-Anchor" href="#4-总结"></a> 4. 总结</h2>
+<p>当给定要插入删除的位置时，链表可以在 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span> 的时间复杂度内完成插入删除操作。而数组想插入删除，就不得不咣咣咣移动后面的所有元素腾出地方或者往前缩，时间复杂度为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>N</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(N)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mclose">)</span></span></span></span>。</p>
+<p>但是由于数组是连续空间，支持快速下标访问，所以可以在有序数组上进行二分查找。（数组扳回一局）</p>
+<p>以后学到的树和图都是以链表为基础，所以熟练掌握链表的写法是非常重要的！！！</p>
+<p>可以看到我写的代码都是已经封装好的函数，我建议大家养成好习惯，把一些细节的代码都封装成函数，并且起一个<strong>清楚的名字</strong>，在<code>main()</code>函数里反复根据需求调用函数，这样做好处很多：</p>
+<ul>
+<li>函数具有可移植性，以后用的时候（包括用自己的电脑考试）可以直接 copy；</li>
+<li>你的程序逻辑非常清晰，助教读了之后非常乐意帮你改 bug；</li>
+<li>你自己写出来也觉得很有成就感。</li>
+</ul>
+<p>建议大家反复研究示例代码，深刻理解指针的用法，记住插入和删除的流程。</p>
+<p>由于链表大量使用指针，所以初学者写程序的时候很可能会犯<strong>野指针</strong>的错误，当你发现你的程序跑着跑着就死了。DEV C++ 或 CLion 的<strong>断点调试</strong>功能能很快帮你找到问题所在哦。</p>
+<p>另外单纯的链表在做题中较少使用，但是将链表的尾部连到头部，就成了<strong>循环链表</strong>，如果给链表定义<code>left</code>和<code>right</code>两个指针就成了<strong>双向链表</strong>，它们有更丰富的功能等着你们去探索呢~</p>
+<p>那么……祝大家享受编程的乐趣，成绩更上一层楼！</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%B4%E7%B4%A0%E7%9A%84-C-%E8%AF%AD%E8%A8%80%E6%95%99%E7%A8%8B/" class="category-chain-item">朴素的 C 语言教程</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C%E8%AF%AD%E8%A8%80/">#C语言</a>
+      
+        <a href="/tags/BUAA/">#BUAA</a>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">#数据结构</a>
+      
+        <a href="/tags/%E9%93%BE%E8%A1%A8/">#链表</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>聊聊链表</div>
+      <div>http://example.com/2022/01/20/聊聊链表/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Only(AR)</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年1月20日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/01/24/C-%E7%AE%97%E6%B3%95%E6%9D%BF%E5%AD%90%E7%A7%AF%E7%B4%AF/" title="C++算法板子积累">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">C++算法板子积累</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/01/17/CLion%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" title="CLion入门教程">
+                        <span class="hidden-mobile">CLion入门教程</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
